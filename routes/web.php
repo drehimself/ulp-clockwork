@@ -1,5 +1,9 @@
 <?php
 
+use App\User;
+use App\Mail\OrderShipped;
+use Illuminate\Support\Facades\Mail;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,5 +16,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    clock()->startEvent('get-users', "Get all users in database");
+    $users = User::all();
+    clock()->endEvent('get-users');
 });
+
+Route::get('/posts', 'PostController@index')->name('post.index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
